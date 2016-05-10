@@ -40,7 +40,7 @@ for application in applications:
                 fileCount += 1
                 size += os.path.getsize(root + '/' + file)
                 if listMetrics:
-                    print root + file
+                    print root + '/' + file
     result = {'size': size, 'files': fileCount}
     totalSize += size
     totalMetrics += fileCount
