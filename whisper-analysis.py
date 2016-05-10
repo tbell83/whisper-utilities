@@ -8,21 +8,22 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-a', action='store', dest='age', type=int, default=30)
 parser.add_argument('-p', action='store', dest='path', type=str,
                     default='/opt/graphite/storage/whisper/applications')
+parser.add_argument('-l', action='store_true', dest='listMetrics',
+                    default=False)
 args = parser.parse_args()
 
 graphiteDirectory = args.path
-age = args.age * (24 * 60 * 60)
+listMetrics = args.listMetrics
+age = args.age * (24 * 60 ** 2)
 epochTarget = int(time.time()) - age
-count = 0
 
 applications = os.listdir(graphiteDirectory)
-analysis = {}
 
-table = PrettyTable(["Metric Path", "Files", "Size (MB)"])
-table.padding_width = 2
+table = PrettyTable(["Metric Path", "Files", "Size (MB)"],
+                    padding_width=2,
+                    sortby='Size (MB)',
+                    reversesort=True)
 table.align = "l"
-table.sortby = "Size (MB)"
-table.reversesort = True
 
 totalMetrics = 0
 totalSize = 0
@@ -35,6 +36,8 @@ for application in applications:
             if os.path.getmtime(root + '/' + file) < epochTarget:
                 fileCount += 1
                 size += os.path.getsize(root + '/' + file)
+                if listMetrics:
+                    print root + '/' + file
     result = {'size': size, 'files': fileCount}
     totalSize += size
     totalMetrics += fileCount
