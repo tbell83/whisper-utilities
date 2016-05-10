@@ -10,6 +10,8 @@ parser.add_argument('-p', action='store', dest='path', type=str,
                     default='/opt/graphite/storage/whisper/applications')
 parser.add_argument('-l', action='store_true', dest='listMetrics',
                     default=False)
+parser.add_argument('-t', action='store_false', dest='showTable',
+                    default=True)
 args = parser.parse_args()
 
 graphiteDirectory = args.path
