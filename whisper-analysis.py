@@ -15,6 +15,7 @@ parser.add_argument('-t', action='store_false', dest='showTable',
 args = parser.parse_args()
 
 graphiteDirectory = args.path
+showTable = args.showTable
 listMetrics = args.listMetrics
 age = args.age * (24 * 60 ** 2)
 epochTarget = int(time.time()) - age
@@ -49,6 +50,7 @@ for application in applications:
                       fileCount,
                       size / 1024 ** 2])
 
-print table
-print '{} unused metrics totalling {} GB'.format(totalMetrics,
-                                                 totalSize / 1024 ** 3)
+if showTable:
+    print table
+    print '{} unused metrics totalling {} GB'.format(totalMetrics,
+                                                     totalSize / 1024 ** 3)
